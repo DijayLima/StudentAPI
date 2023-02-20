@@ -1,6 +1,7 @@
 package br.com.StudentAPI.controller;
 
 import br.com.StudentAPI.error.CustomErrorType;
+import br.com.StudentAPI.error.ResourseNotFoundException;
 import br.com.StudentAPI.model.Student;
 import br.com.StudentAPI.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,8 @@ public class StudentRestController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> getStudentById(@PathVariable("id") Long id){
+        verifyIfStudentExists(id);
         Optional<Student> student = studentDAO.findById(id);
-        if (!student.isPresent())
-            return new ResponseEntity<>(new CustomErrorType("Student not found"), HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(student.get(), HttpStatus.OK);
     }
 
@@ -45,12 +45,19 @@ public class StudentRestController {
 
     @PutMapping
     public ResponseEntity<?> update(@RequestBody Student student){
+        verifyIfStudentExists(student.getId());
         studentDAO.save(student);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
+        verifyIfStudentExists(id);
         studentDAO.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private void verifyIfStudentExists(Long id){
+        if (!studentDAO.findById(id).isPresent())
+            throw new ResourseNotFoundException("Student not found for ID: "+ id);
     }
 }
