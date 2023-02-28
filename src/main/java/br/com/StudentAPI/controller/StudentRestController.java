@@ -4,6 +4,8 @@ import br.com.StudentAPI.error.CustomErrorType;
 import br.com.StudentAPI.error.ResourseNotFoundException;
 import br.com.StudentAPI.model.Student;
 import br.com.StudentAPI.repository.StudentRepository;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,11 +41,13 @@ public class StudentRestController {
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody Student student){
+    @Transactional
+    public ResponseEntity<?> save(@Valid @RequestBody Student student){
         return new ResponseEntity<>(studentDAO.save(student), HttpStatus.CREATED);
     }
 
     @PutMapping
+    @Transactional
     public ResponseEntity<?> update(@RequestBody Student student){
         verifyIfStudentExists(student.getId());
         studentDAO.save(student);

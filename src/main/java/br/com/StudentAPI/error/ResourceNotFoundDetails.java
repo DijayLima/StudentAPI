@@ -1,35 +1,9 @@
 package br.com.StudentAPI.error;
 
-public class ResourceNotFoundDetails {
-    private String title;
-    private int status;
-    private String detail;
-    private long timestamp;
-    private String developerMessage;
+public class ResourceNotFoundDetails extends ErrorDetail {
 
     private ResourceNotFoundDetails() {
     }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public String getDetail() {
-        return detail;
-    }
-
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public String getDeveloperMessage() {
-        return developerMessage;
-    }
-
 
     public static final class Builder {
         private String title;
@@ -72,11 +46,11 @@ public class ResourceNotFoundDetails {
 
         public ResourceNotFoundDetails build() {
             ResourceNotFoundDetails resourceNotFoundDetails = new ResourceNotFoundDetails();
-            resourceNotFoundDetails.title = this.title;
-            resourceNotFoundDetails.status = this.status;
-            resourceNotFoundDetails.detail = this.detail;
-            resourceNotFoundDetails.timestamp = this.timestamp;
-            resourceNotFoundDetails.developerMessage = this.developerMessage;
+            resourceNotFoundDetails.setTitle(title);
+            resourceNotFoundDetails.setStatus(status);
+            resourceNotFoundDetails.setDetail(detail);
+            resourceNotFoundDetails.setTimestamp(timestamp);
+            resourceNotFoundDetails.setDeveloperMessage(developerMessage);
             return resourceNotFoundDetails;
         }
     }
